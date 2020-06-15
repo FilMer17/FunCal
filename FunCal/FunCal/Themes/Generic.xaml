@@ -1,0 +1,106 @@
+<ResourceDictionary
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="clr-namespace:FunCal" xmlns:Design="clr-namespace:FunCal.Design">
+
+    <Design:Converter x:Key="Converter"></Design:Converter>
+    <Design:DayColor x:Key="DayColor"></Design:DayColor>
+
+    <Style TargetType="{x:Type local:Calendar}">
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type local:Calendar}">
+                    <Border Background="{TemplateBinding Background}"
+                            BorderBrush="{TemplateBinding BorderBrush}"
+                            BorderThickness="{TemplateBinding BorderThickness}">
+
+                        <DockPanel>
+                            <TextBlock Text="{Binding Date}" />
+
+                            <Grid Height="30" DockPanel.Dock="Top">
+
+                            </Grid>
+
+                            <ItemsControl ItemsSource="{Binding NameDays}" DockPanel.Dock="Top" FontSize="22">
+                                <ItemsControl.ItemTemplate>
+                                    <DataTemplate>
+                                        <TextBlock TextAlignment="Center" Text="{Binding}">
+                                            <TextBlock.Background>
+                                                <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                                                    <GradientStop Color="#FF171717" Offset="0"/>
+                                                    <GradientStop Color="#FF575757" Offset="0.5"/>
+                                                    <GradientStop Color="#FF171717" Offset="1"/>
+                                                </LinearGradientBrush>
+                                            </TextBlock.Background>
+                                        </TextBlock>
+                                    </DataTemplate>
+                                </ItemsControl.ItemTemplate>
+                                <ItemsControl.ItemsPanel>
+                                    <ItemsPanelTemplate>
+                                        <UniformGrid Rows="1" Columns="7" />
+                                    </ItemsPanelTemplate>
+                                </ItemsControl.ItemsPanel>
+                            </ItemsControl>
+
+                            <ItemsControl ItemsSource="{Binding Days}">
+                                <ItemsControl.ItemTemplate>
+                                    <DataTemplate>
+                                        <!--Box-->
+                                        <Border BorderBrush="#FF171717" BorderThickness="2" Padding="0">
+
+                                            <Border Name="InnerBorder" BorderBrush="{Binding Path=Tasks, Converter={StaticResource DayColor}}" BorderThickness="2">
+
+                                                <Border.Style>
+                                                    <Style TargetType="{x:Type Border}">
+                                                        <Style.Triggers>
+                                                            <!--Current Day-->
+                                                            <DataTrigger Binding="{Binding IsToday}" Value="true">
+                                                                <Setter Property="Border.Background">
+                                                                    <Setter.Value>
+                                                                        <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                                                                            <GradientStop Color="#FF1EA6C8" Offset="0"/>
+                                                                            <GradientStop Color="#FF0691B3" Offset="1"/>
+                                                                        </LinearGradientBrush>
+                                                                    </Setter.Value>
+                                                                </Setter>
+                                                            </DataTrigger>
+                                                        </Style.Triggers>
+                                                    </Style>
+                                                </Border.Style>
+
+                                                <DockPanel>
+                                                    <!--Day Number-->
+                                                    <StackPanel Orientation="Horizontal" DockPanel.Dock="Top" FlowDirection="LeftToRight">
+                                                        <TextBlock Text="{Binding Date, Converter={StaticResource Converter}, ConverterParameter=DAY}" FontSize="18" Margin="5,5,5,5" >
+                                                            <TextBlock.Style>
+                                                                <Style TargetType="{x:Type TextBlock}">
+                                                                    <Style.Triggers>
+                                                                        <DataTrigger Binding="{Binding IsThisMonth}" Value="false">
+                                                                            <Setter Property="TextBlock.Foreground" Value="Gray"></Setter>
+                                                                        </DataTrigger>
+                                                                    </Style.Triggers>
+                                                                </Style>
+                                                            </TextBlock.Style>
+                                                        </TextBlock>
+                                                    </StackPanel>
+
+                                                    <TextBox IsEnabled="{Binding Enabled}" Text="{Binding Tasks, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" AcceptsReturn="True" TextWrapping="Wrap" BorderThickness="0" ScrollViewer.VerticalScrollBarVisibility="Hidden" Background="{x:Null}" Foreground="White" FontSize="16"/>
+                                                </DockPanel>
+                                            </Border>
+                                        </Border>
+
+                                    </DataTemplate>
+                                </ItemsControl.ItemTemplate>
+                                <ItemsControl.ItemsPanel>
+                                    <ItemsPanelTemplate>
+                                        <UniformGrid Rows="6" Columns="7" />
+                                    </ItemsPanelTemplate>
+                                </ItemsControl.ItemsPanel>
+                            </ItemsControl>
+                        </DockPanel>
+                    </Border>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+</ResourceDictionary>
